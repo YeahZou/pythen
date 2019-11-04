@@ -8,11 +8,13 @@ import json
 indu_type_url = 'http://vip.stock.finance.sina.com.cn/q/view/newSinaHy.php'
 indu_url = 'http://vip.stock.finance.sina.com.cn/quotes_service/api/json_v2.php/Market_Center.getHQNodeData'
 
+# 获取新浪行业列表
 r = requests.get(indu_type_url)
 if r.status_code != 200:
     print('get industry type data failed.')
 else:
     ret = re.sub(r'^.+?{', '{', r.text)
+    print(ret)
     j = json.loads(ret)
     # 新浪行业分类列表
     indu_list = []
@@ -27,7 +29,7 @@ else:
 
     # 获取一个行业的股票列表
     args = {'page': 1, 'num': 40, 'sort': 'symbol', 'asc': 1, 'node': indu_list[0], '_s_r_a': 'init'}
-    r = requests.get(indu_url, params = args)
+    #r = requests.get(indu_url, params = args)
     # 返回值不是正真的json格式
     dict_list = re.split(r'},{', re.sub('^\[\{|\}\]$', '', r.text))
     stocks_of_indu = []
