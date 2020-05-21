@@ -139,7 +139,6 @@ def getFundBasicInfo(symbol):
     data = re.sub(r'[\n\r]', '', data)
     dictData = demjson.decode(data, decode_object=convertBasicInfo)
 
-    dictData['result']['data']['symbol'] = symbol
     return dictData['result']['data']
     #print(dictData)
 
@@ -159,11 +158,43 @@ def convertBasicInfo(obj):
         mmList = re.findall(r'\>(.+?)\<a\>', obj['ManagerName'])
         ret['mamagerId'] = ','.join(mList)
         ret['managerName'] = ','.join(mmList)
+        ret['symbol'] = obj['symbol']
         
         return ret
     return obj
 
-print(getFundBasicInfo('005636'))
+#print(getFundBasicInfo('005636'))
+##############################################################################
+##############################################################################
+
+FUND_STATUS_URL = 'https://trade.xincai.com/api/getFundBuyStatus2?callback=fund'
+def getFundBuyStatus(symbolList):
+    fund_code = symbolList
+    if isinstance(symbolList, list):
+        fund_code = ','.join(symbolList)
+    
+    r = requests.get(FUND_STATUS_URL, params = {'fund_code': fund_code})
+    data = re.sub(r'\\\/', '', r.text)
+    data = re.sub(r'\\"', "'", data)
+    data = data.encode('utf-8', 'ignore').decode('unicode-escape')
+    data = re.sub(r'^[\w\W]*fund\(\{', '{', data)
+    data = re.sub(r'\}\)[\w\W]*$', '}', data)
+    data = re.sub(r'[\n\r]', '', data)
+    dictData = demjson.decode(data)
+    
+    sObj = dictData['data']['list']
+    ret = {}
+    for symbol in sObj:
+        ret[symbol] = {
+            'type': sObj[symbol]['type'],
+            'canBuy': sObj[symbol]['canbuy']
+        }
+    
+    return ret
+
+
+#print(getFundBuyStatus('005636'))
+
 ##############################################################################
 ##############################################################################
 # save to file
