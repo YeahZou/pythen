@@ -9,7 +9,7 @@ import os
 import sys
 import re
 
-ROOT_PATH = 'data'
+ROOT_PATH = os.path.join('..', 'data')
 STOCK_PATH = os.path.join(ROOT_PATH, 'stock')
 
 def getpath(strategy):
