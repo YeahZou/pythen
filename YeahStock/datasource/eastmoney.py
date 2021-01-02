@@ -17,7 +17,7 @@ print(__package__)
 
 from pyquery import PyQuery as pq
 
-from ..myfile import storage
+#from ..myfile import storage
 
 DS = os.path.basename(__file__)
 
@@ -47,7 +47,7 @@ def getCRTicketData(symbol):
     data = re.sub(r'\)[\w\W]*$', '', data)
     data = demjson.decode(data)
     
-    storage.save_to_file(DS, 'stock', 'tick', symbol, data['name'], data)
+#    storage.save_to_file(DS, 'stock', 'tick', symbol, data['name'], data)
 
     ret = {
         'code': data['code'],
@@ -58,7 +58,7 @@ def getCRTicketData(symbol):
         ret['historyData'].append(dict(zip(['date', 'price', 'volume'], re.split('\s*,\s*', item))))
 
     return ret
-print(getCRTicketData('6001151'))
+#print(getCRTicketData('6001151'))
 
 '''
 获取日K线图数据
@@ -68,7 +68,7 @@ def getDayKData(symbol):
     data = re.sub(r'^[\w\W]*\(', '', r.text)
     data = re.sub(r'\)[\w\W]*$', '', data)
     data = demjson.decode(data)
-
+    print(data)
     ret = {
         'name': data['name'],
         'code': data['code'],
@@ -87,7 +87,7 @@ def getDayKData(symbol):
     return ret
    
 
-#print(getDayKData('6013181'))
+print(getDayKData('6013181'))
 
 '''
 获取周K线图数据

@@ -8,7 +8,7 @@ import requests
 
 
 def main():
-    p = argparse.ArgumentParser(description="Crawl stock K-line data.")
+    p = argparse.ArgumentParser(description="Crawl history stock K-line data.")
     p.add_argument(
         '-DS',
         '--datasource',
@@ -31,3 +31,4 @@ def main():
     print(func)
 
 main()
+

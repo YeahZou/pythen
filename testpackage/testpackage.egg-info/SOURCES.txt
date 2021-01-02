@@ -1,0 +1,13 @@
+setup.cfg
+setup.py
+testpackage/__init__.py
+testpackage/__main__.py
+testpackage/main.py
+testpackage.egg-info/PKG-INFO
+testpackage.egg-info/SOURCES.txt
+testpackage.egg-info/dependency_links.txt
+testpackage.egg-info/top_level.txt
+testpackage/bin/__init__.py
+testpackage/bin/bin_module.py
+testpackage/lib/__init__.py
+testpackage/lib/lib_module.py
