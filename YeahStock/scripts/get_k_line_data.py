@@ -1,11 +1,15 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
+import sys
 import importlib
 
 import argparse
 import requests
 
+from yeahstock.logger import Logger
+
+logger = Logger.getLogger(sys.argv[0])
 
 def main():
     p = argparse.ArgumentParser(description="Crawl stock K-line data.")
@@ -25,9 +29,11 @@ def main():
     )
 
     args = p.parse_args()
-    print(args.datasource)
-    mod = importlib.import_module('datasource.' + args.datasource)
+    logger.info("data source is %s", args.datasource)
+    mod = importlib.import_module('yeahstock.datasource.' + args.datasource)
     func = getattr(mod, 'get' + args.type + 'Data')
-    print(func)
+    logger.info('function name is %s', func)
+    
+    logger.info(func('600776'))
 
 main()

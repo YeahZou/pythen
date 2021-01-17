@@ -5,18 +5,18 @@ import requests
 import re
 import time
 
-import utils
-import ServerAdapter as sa
+from yeahstock.utils import utils
+from yeahstock.rest import ServerAdapter as sa
+from yeahstock.logger import Logger
 
-import Logger
 
 # 从深圳证券交易所获取数据
 
-logger = Logger.getLogger('szse')
+logger = Logger.getLogger()
 
 URL = 'http://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1110&TABKEY=tab1'
 
-def getStockList(mkt = '', page = 1):
+def getStockList(mkt = '', page = 1, dryRun = 1):
     retList = []
 
     if mkt == '':
@@ -38,14 +38,15 @@ def getStockList(mkt = '', page = 1):
                 'listingDate': s['agssrq']
             }
             retList.append(stock)
-
-        sa.addStocks(retList)
         
         logger.info(retList)
 
-        if page < 1 and page * 20 < pageCount:
-            time.sleep(5)
-            getStockList(mkt, page + 1)
+        if dryRun != 1:
+            sa.addStocks(retList)
+        
+            if page < 1 and page * 20 < pageCount:
+                time.sleep(5)
+                getStockList(mkt, page + 1)
 
     #return retList             
     
@@ -60,5 +61,5 @@ def get_tick_data(code):
 #def get_day_line_data(code):
 
 
-getStockList('sme', 1)
+#getStockList('sme', 1)
 
